@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-component-toolkit/static/css/main.d5244f28.css",
+    "main.js": "/react-component-toolkit/static/js/main.1f3c1a01.js",
+    "index.html": "/react-component-toolkit/index.html",
+    "main.d5244f28.css.map": "/react-component-toolkit/static/css/main.d5244f28.css.map",
+    "main.1f3c1a01.js.map": "/react-component-toolkit/static/js/main.1f3c1a01.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d5244f28.css",
+    "static/js/main.1f3c1a01.js"
+  ]
+}
