@@ -1,70 +1,277 @@
-# Getting Started with Create React App
+# Проект react-component-toolkit.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Содержание проекта:
 
-## Available Scripts
+- КОМПОНЕНТЫ
+- ПРЕОБРАЗОВАНИЕ МАССИВА ОБЪЕКТОВ В МАССИВ REACT-ЭЛЕМЕНТОВ
+- UI БИБЛИОТЕКА
+- CSS-МОДУЛИ
+- ПРОПС children
+- УПРАВЛЯЕМЫЙ КОМПОНЕНТ
+- ОБМЕН ДАННЫМИ МЕЖДУ КОМПОНЕНТАМИ
+- УДАЛЕНИЯ ПОСТОВ ИЗ МАССИВА REACT-ЭЛЕМЕНТОВ
+- ОТРИСОВКА ПО УСЛОВИЮ
+- ВЫПЛЫВАЮЩИЙ СПИСОК
+- СОРТИРОВКА
+- ПОИСК-ФИЛЬТРАЦИЯ
+- useMemo
+- МОДАЛЬНОЕ ОКНО
+- ПЕРЕИСПОЛЬЗУЕМЫЙ UI КОМПОНЕНТ
+- АНИМАЦИЯ С ПОМОЩЬЮ REACT TRANSITION GROUP
+- КАСТОМНЫЕ ХУКИ
 
-In the project directory, you can run:
+## Минимальная конфигурация для запуска пустого приложения.
 
-### `npm start`
+1. Установка node.js + npm.
+2. Установка React через терминал: npx create-react-app "project_name"
+3. Команда для запуска в терминале: npm start
+4. В файле index.html очищаем все, кроме базовой структуры и <div id="root"></div>
+5. В папке src удаляем все файлы кроме index.js и App.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Корректируем файлы:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Файл index.js:
 
-### `npm test`
+```
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <App />
+);
+```
 
-### `npm run build`
+### Файл App.js:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+import React from "react";
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+function App() {
+  return <div className="App">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  </div>;
+}
 
-### `npm run eject`
+export default App;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Минимальная конфигурация для запуска пустого приложения готова.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 1. ПЕРВЫЙ КОМПОНЕНТ. СОЗДАНИЕ РАЗМЕТКИ И СТИЛЕЙ.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1 В файле App.js создадим html разметку для поста. Структура должна быть следующая: div.post>(div.post**content>strong+div)+(div.post**btns>button)
+2 Добавим стили для нашей разметки. Создаем в src папку styles. Внутри папки файл App.css .
+3 Прописываем минимальное обнуление стилей. \* {margin: 0; padding: 0; box-sizing: border-box;}.
+4 Добавим стиль для App: width: 800px
+5 Добавим стиль для #root: display: flex; justify-content: center;
+6 Добавим стили для post: display: flex; padding: 15px; border: 2px solid teal; margin-top: 15px; justify-content: space-between; align-item: center;
+7 Импортируем стили в файл App.js
+8 Выделяем разметку поста в отдельный компонент. Создаем в src папку components. В ней создаем файл для компонента PostItem.jsx
+9 Добавляем новый компонент в App.js
+10 С помощью props добавим возможность изменять Содержимое компонента. Передадим в компонент props: post={{id:1, title:'Javascript', body:'Description'}}
+11 Заменить статические данные на данные из передаваемых пропсов.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 2. ПРЕОБРАЗОВАНИЕ МАССИВА ОБЪЕКТОВ В МАССИВ REACT-ЭЛЕМЕНТОВ.
 
-## Learn More
+1 В файле App.js создаём состояние для списка постов posts, setPosts.
+2 В дефолтное состояние передаем список из нескольких постов (хотя бы три). Структура поста: { id: 1, title: "JavaScript", body: "Description 3" }.
+3 Теперь получаем все посты с помощью цикла и функции posts.map post => <PostItem post={post} />
+4 Обязательно добавляем key который будет равен id.
+5 Добавим к списку постов заголовок <h1 style={{textAlign: "center}}>Список постов</h1>
+6 Получившийся код выделим в еще один компонент. Файл PostList.jsx .
+7 В этом компоненте с помощью деструктуризации передадим данные для постов posts и данные для заголовка title.
+8 Добавим компонент PostsList в App.js . Помимо основных пропсов так же добавляем ключ. Я использую для значения ключа Data.now()
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 3. СОЗДАНИЕ UI БИБЛИОТЕКИ. CSS-МОДУЛИ. ПРОПС children.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1 Добавим форму создания поста. В файле App.js создаём форму с двумя input. Для заголовка и для описания поста.
+2 Добавим кнопку "Создать".
+3 Для графических компонентов создадим папку UI внутри папки components.
+4 Внутри UI создадим две папки button и input.
+5 Создаем компонент Button.jsx в папке button.
+6 Создаем файл для стилей, класс из которого мы сможем использовать в компоненте. Создаем его с помощью MyButton.module.css для уникальных названий классов элементов.
+7 Создаем стили для кнопки:
+8 .myBtn{ padding: 5px 15px; color: teal; font-size: 14px; background: transparent; border: 1px solid teal; cursor: pointer;}
+9 Добавляем этот модуль в файл компонента MyButton.
+10 Добавляем класс в элемент button className={classes.myBtn}
+11 Добавим нашу кнопку в форму <MyButton>Создать</MyButton>.
+12 Что бы воспользоваться текстом "Создать" в компоненте, добавим пропс children и остальные пропсы ...props. Остальные пропсы мы сможем использовать, например, для отключения кнопки disabled пока форма не заполнена и т.д.
+13 В компонентной кнопки развернём пропсы.
+14 Внутри кнопки используем пропс children.
+15 Переходим к компоненту input.
+16 Создаем компонент MyInput.jsx в папке input.
+17 Создаем файл для стилей, класс из которого мы сможем использовать в компоненте MyInput.module.css .
+18 Создаем стили для инпута: .myInput{ width: 100%; padding: 5px 15px; margin: 5px 0; border: 1px solid teal;}
+19 Добавляем класс и пропсы в компонент MyInput: <input {...props} className={classes.myInput} />
+20 В App.js заменяем обычный input на MyInput.
 
-### Code Splitting
+## 4. ДОБАВЛЕНИЕ НОВЫХ ПОСТОВ В МАССИВ. УПРАВЛЯЕМЫЙ КОМПОНЕНТ.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1 Вешаем слушатель события на кнопку создания поста. При нажатии будет вызываться функция addNewPost().
+2 Создадим пока пустую функцию addNewPost().
+3 Создадим состояния в которое будем помещать значение из первого MyInput const [title, setTitle].
+4 Реализуем функцию onChange для отслеживания изменения внутри MyInput. e => setTitle(e.target.value).
+5 Внутри функции addNewPost уберем дефолтное поведение, что бы страница не обновлялась.
+6 Создадим состояния в которое будем помещать значение из второго MyInput const [body, setBody].
+7 Реализуем функцию onChange для отслеживания изменения внутри MyInput. e => setBody(e.target.value).
+8 Создаем двустороннее связывание. В фуннкции addNewPost создаем переменную, куда помещаем информацию из инпутов. id будет равно Data.now().
+9 С помощью setPosts устанавливаем значение старых постов ...posts + newPost.
+10 В компоненте PostItem в файле PostsList для номера поста будем использовать index + 1 в функции map.
+11 В PostItem заменить props.post.id на props.number
+12 Для очищения input после создания поста надо обнулить title и body в функции addNewPost и добавить value для MyInput в значение которого в первом инпуте будет title и во втором body.
+13 Так же можем объединить два наших состояния в одно, в котором будет один объект с полями title body.
+14 Поменяем два состояния title и body на состояние post.
+15 И заменим все связанные с этим переменные (установка в новое состояние, если менять значение только одного из ключей утанавливается {...post, title: нужное_значение} ).
 
-### Analyzing the Bundle Size
+## 5. ОБМЕН ДАННЫМИ МЕЖДУ КОМПОНЕНТАМИ. ОТ РОДИТЕЛЯ К РЕБЕНКУ. ОТ РЕБЕНКА К РОДИТЕЛЮ.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1 Выделим форму создания поста в отдельный компонент.
+2 Создаем файл PostForm.jsx в папке components.
+3 Переносим в компонент код формы из App.js .
+4 Переносим в компонент функцию addNewPost .
+5 Переносим в компонент состояние post.
+6 У нас нет доступа к состоянию setPosts поэтому удалим setPosts.
+7 Создание нового объекта сократим до: const newPost = {...post, id: Date.now()} .
+8 Добавим объект newPost в массив постов в файле App.js .
+9 В файле App.js добавляем компонент PostForm и передаем в пропсах функцию create={createPost}.
+10 Эту функцию создаем чуть выше. Функция на вход будет ожидать новый созданный Пост. Его мы будем передавать в компоненте PostForm.
+11 Внутри функции нам нужно изменить состояние posts на [...posts, newPost]
+12 Вызываем эту функцию внутри функции addNewPost в PostForm. Вызвав props который называется create и передаем туда аргументом newPost.
 
-### Making a Progressive Web App
+## 6. УДАЛЕНИЯ ПОСТОВ.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1 Заменим кнопку удаления на компонент MyButton.
+2 В App.js создаем функцию для удаления removePost, которая аргументом будет принимать post.
+3 Реализовывать удаление будем с помощью функции .filter . Будем проверять id поста в posts и id присланного поста. Таким образом нам в новый список постов будут добавлены все посты, кроме присланного в функции.
+4 Передаем эту функцию как пропс в компонент PostList.
+5 В файле PostList.jsx добавить эту функцию в аргументы PostItem.
+6 В файле PostItem.jsx на кнопку вешаем событие в котором при клике вызываем функцию из пропса remove.
 
-### Advanced Configuration
+## 7. ОТРИСОВКА ПО УСЛОВИЮ.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1 Переходим в файл App.js
+2 Прописываем тернарный оператор с проверкой длины массива постов, и если она будет равна 0, будем просто выводить <h1>"ПОСТОВ НЕТ"</h1>
 
-### Deployment
+## 8. СОРТИРОВКА. ВЫПЛЫВАЮЩИЙ СПИСОК.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1 В файле App.js над поставим добавим еще один div с тегом select.
+2 Добавим несколько опций у которых будет какое-то value и какой-то текст внутри самой опции, например это будет сортировка по названию и сортировка по описанию.
+3 Добавим разделитель над селектом <hr style={{margin: "15px 0"}}/> .
+4 Выделим получившейся селект в отдельный компонент.
+5 Создаем новую папку в components/ui. Называем ее select.
+6 Внутри создаем компонент с названием MySelect.jsx . Этот компонент будет принимать несколько пропсов. Первый и самый важный - это набор опций (option).
+7 Так же помимо основных опций, нам необходимо добавить дополнительную, например, чтобы там была надпись "сортировка по", пропс можно назвать defaultValue.
+8 Далее мы итерируемся по каждой опции с помощью map, и дорисовываем с помощью тега html эту опцию.
+9 Как value указываем поле из объекта option.value, и то что мы поместим в эту опцию достаем из поля option.name .
+10 В файл App.js заменяем select на наш собственный.
+11 Передаем туда все необходимые пропсы: defaultValue="Сортировка по", options={[{value: "title", name: "По названию"}, {value: "body", name: "По описанию"}]}
+12 Добавим option со значением defaultValue свойство disabled что бы из активных остались только опции сортировки.
+13 В файле MySelect в цикле добавить к option key. Сделаем ключ равным option.value подразумевая что они будут уникальны.
+14 Необходимо реализовать двустороннюю связь и сделать этот компонент управляемым.
+15 Пропсами будем принимать value и функцию onChange для того что бы следить за изменениями нашего селекта. Их передавать будем непосредственно в тег select.
+16 Реализуем функцию onChange. Будем передавать в эту функцию не сам ивент, а значение, которое выбрал пользователь. Его достаем из поля event.target.value с помощью callback.
+17 Переходим в App.js для реализации двухстороннего связывания.
+18 Создаем состояние selectedSort с дефолтным значением "".
+19 В пропсах MySelect передаем в качестве value={selectedSort}.
+20 В качестве функции onChange будем вызывать функцию setSelectedSort и передавать туда то, что приходит к нам из самого селекта.
+21 После того как пользователь выбрал способ сортировки, нам необходимо массив отсортировать.
+22 Сделаем для этого функцию sortPosts и в onChange будем вызывать ее. Эта функция принимает выбранный механизм сортировки, и меняет его с помощью setSelectedSort.
+23 В функции sortPosts вызываем функцию setPosts что бы туда передать отсортированный массив. Функция не возвращает новый массив, а меняет тот массив, к которому была применена.
+24 В функцию [].sort передаем функцию, которая принимает a и b и производит следующие действия: выцепляем поле, которое выбрал пользователь title либо же body и для сравнения строк используем функцию localeCompare. Эта функция предназначена для сравнения строк, и чаще всего она используется при сортировки. И соответственно мы сравниваем поле из объекта a с полем из объекта b.
 
-### `npm run build` fails to minify
+## 9. ПОИСК. ФИЛЬТРАЦИЯ. useMemo.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1 Создадим инпут, куда будем вводить название поста, который будем искать.
+2 И сразу же сделаем этот поиск управляемым создав для этого состояние searchQuery.
+3 В качестве value передаем searchQuery.
+4 Повесим слушатель события onChange, где помещаем поле value в функцию изменения нашего состояния.
+5 Вынесем механизм сортировки в отдельную переменную sortedPosts. Заменив sort на само состояние selectedSort.
+6 Удаляем вызов функции setPosts().
+7 В компонент PostList будем передавать не просто состояние, а уже отсортированный массив постов: posts={sortedPosts}.
+8 Так как по умолчанию значение selectedSort = "" то у нас не отработает первый раз наша sortedPosts. Реализуем функцию getSortedPosts где будем возвращать массив постов в зависимости от того есть ли selectedSort или в нем пустая строка.
+9 Если selectedSort не пустая строка, вернем отсортированный массив, в противном случае вернем обычный список постов.
+10 И в переменную sortedPosts мы помещаем результат выполнения функции.
+11 Сейчас функция вызывается при каждом введенном новом символе в наш инпут. Это поведение нужно изменить.
+12 Такое поведение будем менять с помощью хука useMemo. Этот хук производит вычисления (в нашем случае сортируем массив), запоминает результат этих вычислений, кэширует. На каждую перерисовку компонента этот хук не сортирует массив вновь, а оно достает отсортированный массив из кеша.
+13 Воспользуемся этим хуком: const sortedPosts = useMemo(() => {}, [])
+14 Нам нужно следить за алгоритмом сортировки и за изменением в массиве постов selectedSort, posts.
+15 Переносим функционал из функции getSortedPosts и добавим зависимости.
+16 Теперь на основании отсортированного массива мы можем делать поиск. Для этого опять воспользуемся хуком useMemo, переменную назовем sortedAndSearchedPosts, где первым параметром передаем callback а вторым массив зависимостей. Но теперь в этот массив зависимостей будет попадать поисковая строка searchQuery и уже отсортированный массив sortedPosts.
+17 В компонент PostList мы будем передавать и отсортированный и отфильтрованный массив sortedAndSearchedPosts.
+18 Передаем внутрь фильтра callback после чего обращаемся к названию поста (поле title) и вызываем у него функцию includes() и передаем туда поисковую строку searchQuery (return sortedPosts.filter(post => post.title.includes(searchQuery))).
+19 Устраним чувствительность к регистру нашего фильтра. Для этого нужно вызвать для поисковой строки и для названия функцию .toLowerCase().
+20 Нужно поменять условие, что бы если мы ищем пост, с названием которого нет, у нас появлялся наш текст "Посты не найдены!".
+21 Сделаем декомпозицию. Создадим компонент который отвечает за манипуляции над списком постов. Создаем файл PostFilter.jsx.
+22 Пропсами будем принимать filter - это будет некоторый объект и setFiter - это функция, которая будет этот объект изменять поскольку мы должны иметь доступ к этому фильтру в родительском компоненте.
+23 Переносим в тело компонента код из App.js касающийся сортировки и поиска.
+24 В файле App.js удаляем два предыдущих состояния.
+25 Создаем новое одно состояние filter с помощью useState()
+26 Начальное состояние - это будет объект, который содержит два поля - это выбранный алгоритм сортировки и поисковая строка. Назовем их sort и query.
+27 Теперь поменяем старые состояния на новые.
+28 Функцию состояния передаем в PostFilter filter={filter} setFilter={setFilter}.
+29 Переходим в сам компонент PostFilter.jsx .
+30 Как value для импорта мы получаем поле filter.query .
+31 Для select мы делаем тоже самое, только поле называется filter.sort .
+32 Реализуем двухстороннее связывание.
+33 В MyInput onChange мы меняем сам объект на старый объект где заменяем query на e.target.value: setFilter({...filter, query: e.target.value}).
+34 В случае select мы заменяем поле sort у фильтра. Здесь селект возвращает не ивент а уже выбранный алгоритм сортировки setFilter({...filter, sort: selectedSort}).
+35 Упростим еще немного кода в App.js . Перенесем проверку тернарным оператором в сам компонент PostList удалив ее в App.js .
+
+## 10. МОДАЛЬНОЕ ОКНО. ПЕРЕИСПОЛЬЗУЕМЫЙ UI КОМПОНЕНТ.
+
+    1 Модальное окно для формы создания поста. Создадим папку MyModal и в ней файл MyModal.jsx .
+    2 В этой же папки создадим стили MyModal.module.css .
+    3 Создаем два класса в MyModal.module.css, один будет не активный, а другой будет включаться, когда мы будем вызывать это модальное окно.
+    4 .myModal{ position: fixed; top: 0; bottom: 0; right: 0; left: 0; display: none;}
+    5 .myModal.active{ display: flex; justify-content: center; align-items: center;}
+    6 Напишем стили для контентной части: .myModalContent{ padding: 25px; background: white; border-radius: 16px; min-width: 250px;}
+    7 Импортируем классы в наш компонент.
+    8 Класс myModal добавляем на корневой div.
+    9 Внутри него создадим еще один div с контентной частью.
+    10 Для что бы мы могли помещать в это модальное окно все что захотим, наш компонент будет принимать пропс children.
+    11 Добавляем пропс children в контентный блок.
+    12 Реализуем механизм, который будет отображать либо скрывать модальное окно.
+    13 Для того, что бы добавить класс актив воспользуемся следующей конструкцией: <div className={[cl.myModal, cl.active].join(" ")}> . Создать массив, добавить туда два класса и заджоинить их по пробелу.
+    14 Затемним задний фон для модалки: .myModal {... background: rgba(0, 0, 0, 0.5);}
+    15 Добавим модалку в App.js .
+    16 В модалку поместим PostForm.
+    17 Скрытие и появление модального окна будет регулировать родительский компонент в котором модалка используется.
+    18 В файле MyModal добавим переменную rootClasses, в которой будет храниться список с одним классом myModal.
+    19 Добавим условие: если visible === true, то в эту переменную будем добавлять класс active.
+    20 В файл App.js создаем состояние, для видимости модального окна modal, setModal.
+    21 Передаем пропсами visible={modal} setVisible={setModal} в MyModal.
+    22 Чуть выше сделаем кнопку для вызова модального окна. При нажатии на эту кнопку будет всплывать модальное окно.
+    23 На кнопку вешаем событие onClick, в котором в callback'e будем менять состояние на true.
+    24 Добавим отступ для кнопки, что бы она не прилипала к верху страницы style={{marginTop:"30px"}}
+    25 Для того, чтобы после создания поста модальное окно скрывалось, добавим setModal(false) в функцию createPost на кнопке для создания поста.
+    26 Для реализации скрытия окна при нажатии на темную область на корневой div нужно повесить слушатель события, вызывать функцию, которую мы принимаем пропсом и в ней менять состояние на false.
+    27 Для исключения контентной части из области нажатия для закрытия необходимо предотвратить всплытие события event.stopPropagation(). На блок в котором контентная часть вешаем слушатель события и у него вызываем эту функцию.
+
+## 11. АНИМАЦИЯ. REACT TRANSITION GROUP.
+
+    1 Добавим плавную анимацию при добавлении и удалении поста: При удалении пост уезжает налево; При добавлении пост выезжает справа. Для этого в react есть библиотека которая называется React Transition Group.
+    2 Установим библиотеку: npm install react-transition-group --save
+    3 Для реализации анимации у списков у библиотеке есть раздел Transition Group. В примере на сайте есть некоторый список items. По этому списку с помощью map итерируются и этот список завернут в компонент TransitionGroup.
+    4 Переходим в файл PostList.jsx и в нем обернем наш список в TransitionGroup: <div> => <TransitionGroup> => {posts.map()}
+    5 Далее по документации: сами элементы списка завернуты в компонент, который называется CSSTransition: <div> => <TransitionGroup> => {posts.map(post, index) => <CSSTransition key={post.id} nodeRef={nodeRef} timeout={500} className="post"} => <PostItem>.
+    6 Удаляем nodeRef у CSSTransition.
+    7 Удаляем key у компонента PostItem. Оставляем у CSSTransition.
+    8 Удалzем key у компонента PostList в файле App.js .
+    9 Далее по документации: CSS-Классы для анимации: когда элемент был добавлен (.item-enter) ; когда элемент был удален (.item-exit); когда эта стадия в активном состоянии (.item-enter-active, .item-exit-active); когда эта стадия закончилась.
+    10 Примеры css-классов: .item-enter { opacity: 0;}, .item-enter-active {opacity: 1; transition: opacity 500ms ease-in;}, .item-exit {opacity: 1;}, .item-exit-active {opacity: 0; transition: opacity 500ms ease-in;}
+    11 Переходим в файл App.css копируем в него классы, заменяем item на наш класс "post".
+    12 Cделаем свою анимацию, что бы она была выезжающей: .remove-btn {margin-right: 0.5rem;}, .post-enter {transform: translateX(-350px);}, .post-enter-active {transform: translateX(0px);transition: all 500ms ease-in;}, .post-exit {opacity: 1;}, .post-exit-active {transform: translateX(-350px); transition: all 500ms ease-in;}.
+
+## 12. КАСТОМНЫЕ ХУКИ.
+
+    1 Вынесем в отдельное место логику по сортировки и логику по фильтрации. Реализовать это нам помогут кастомные хуки. Создадим папку hooks и в ней сразу файл usePosts.jsx .
+    2 Первый хук - некоторая функция useSortedPosts, которая параметрами будет принимать posts и метод сортировки. Логика уже написана в App.js . Переносим в хук const sortedPosts = useMemo(), который формирует массив отсортированных постов.
+    3 Избавляемся от объекта filter, потому что аргументом мы принимаем поле, по которому будет идти сортировка.
+    4 Второй хук usePosts будет возвращать уже и отфильтрованный и отсортированный массив. Аргументами он принимает посты, метод сортировки и поисковую строку - posts, sort, query.
+    5 логика по фильтрации у нас уже готова, берем ее из файла App.js и переносим в хук. А так же понадобится получить массив отсортированных постов sortedPosts.
+    6 Далее возвращаем массив отфильтрованных и отсортированных постов.
+    7 Добавляем созданный хук в App.js и передаем в него posts, filter.sort, filter.query.
+
+# КОНЕЦ ПЕРВОЙ ЧАСТИ react-component-toolkit.
